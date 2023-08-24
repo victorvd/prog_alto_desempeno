@@ -1,1 +1,3 @@
-# prog_alto_desempeno
+# Programación de Alto Desempeño
+
+C++ codes to implement high performance programming.
