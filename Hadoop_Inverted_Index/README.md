@@ -128,7 +128,7 @@ Ahora en la carpeta donde se descarga este archivo Hadoop se aplica el siguiente
 tar xzf hadoop-3.3.4.tar.gz
 ```
 
-## Configurar JAVA_HOME:
+### Configurar JAVA_HOME:
 
 Se debe encontrar la ruta donde se instaló Java para configurar la variable de entorno JAVA_HOME usando el siguiente comando:
 
@@ -152,7 +152,7 @@ Se debe buscar las siguientes líneas, comentar y agregar la siguiente línea
 export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-i386
 ```
 
-## Cambiar el directorio de la carpeta Hadoop
+### Cambiar el directorio de la carpeta Hadoop
 
 Se debe mover la instalación de Hadoop al directorio /usr/local/hadoop usando el siguiente comando:
 
@@ -186,7 +186,7 @@ sudo mv * /usr/local/hadoop
 sudo chown -R hduser:hadoop /usr/local/hadoop
 ```
 
-## Configuración de Environment File
+### Configuración de Environment File
 
 Abrir el archivo de entorno (environment file) con este comando:
 
