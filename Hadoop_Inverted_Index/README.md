@@ -234,23 +234,278 @@ Ahora podemos agregar lo siguiente al final de ~/.bashrc:
 sudo nano ~/.bashrc
 ```
 ```shell
-#Hadoop Related Options
-export HADOOP_HOME="/usr/local/hadoop"
+#HADOOP VARIABLES START
+export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-i386/jre/bin/java
+export HADOOP_HOME=/usr/local/hadoop
 export HADOOP_INSTALL=$HADOOP_HOME
+export PATH=$PATH:$HADOOP_INSTALL/bin
+export PATH=$PATH:$HADOOP_INSTALL/sbin
 export HADOOP_MAPRED_HOME=$HADOOP_HOME
 export HADOOP_COMMON_HOME=$HADOOP_HOME
 export HADOOP_HDFS_HOME=$HADOOP_HOME
-export YARN_HOME=$HADOOP_HOME
-export HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_HOME/lib/native
-export PATH=$PATH:$HADOOP_HOME/sbin:$HADOOP_HOME/bin
-export HADOOP_OPTS="-Djava.library.path=$HADOOP_HOME/lib/native"
+export HADOOP_CLASSPATH=/usr/lib/jvm/java-7-openjdk-i386/lib/tools.jar
+export YARN_HOME=$HADOOP_INSTALL
+export HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_INSTALL/lib/native
+export HADOOP_OPTS="-Djava.library.path=$HADOOP_INSTALL/lib"
+#HADOOP VARIABLES END
+```
+Para aplicar los cambios al entorno, ejecute el siguiente comando:
+
+```shell
+source ~/.bashrc
+```
+Se necesita agregar las direcciones IP de la máquina al archivo de hosts para todos los nodos. Se debe asegurar que los nodos estén en la misma red.
+
+Se puede ejecutar el siguiente comando para obtener la dirección IP de la máquina:
+
+```shell
+ip a
+```
+Para agregar las direcciones IP abrimos el archivos de hosts:
+
+```shell
+sudo nano /etc/hosts
+```
+
+Se debe escribir las direcciones IP para el nodo maestro y los esclavos como se muestra:
+
+```shell
+127.0.0.1	localhost
+
+10.0.2.4	master
+10.0.2.5	slave1
+10.0.2.6	slave2
+```
+Abrir el archivo de nombre de host (hostname) en todos los nodos. Cambiar el nombre de las máquinas a master, slave1 y slave2, según corresponda.
+
+```shell
+sudo nano /etc/hostname
+```shell
+
+```shell
+	master
+```
+
+```shell
+	slave1
+```
+
+```shell
+	slave2
+```
+
+Se debe reiniciar los dispositivos para aplicar los cambios.
+
+Después de haber configurado el archivo bashrc, podemos sustituir la ruta '/usr/local/hadoop' por '$HADOOP_HOME'. 
+
+El archivo /usr/local/hadoop/etc/hadoop/core-site.xml contiene propiedades de configuración que Hadoop utiliza al iniciarse. Este archivo se puede utilizar para anular la configuración predeterminada con la que comienza Hadoop.
+
+```shell
+sudo mkdir -p /app/hadoop/tmp
+sudo chown hduser:hadoop /app/hadoop/tmp
+```
+
+Abrir el archivo core-site.xml con el siguiente comando:
+
+```shell
+sudo nano $HADOOP_HOME/etc/hadoop/core-site.xml
+```
+
+Agregue las siguientes configuraciones entre la etiqueta <configuration></configuration>:
+
+```shell
+<configuration>
+ <property>
+  <name>hadoop.tmp.dir</name>
+  <value>/app/hadoop/tmp</value>
+  <description>A base for other temporary directories.</description>
+ </property>
+
+ <property>
+  <name>fs.default.name</name>
+  <value>hdfs://master:54310</value>
+  <description>Nombre del sistema de archivos predeterminado. Un URI cuyo esquema y autoridad determinan la implementación del sistema de archivos. El esquema URI determina la propiedad de configuración (fs.SCHEME.impl) que nombra la clase de implementación del FileSystem. La autoridad del URI se utiliza para determinar el host, puerto, etc. de un sistema de archivos.</description>
+ </property>
+</configuration>
+```
+
+El archivo /usr/local/hadoop/etc/hadoop/hdfs-site.xml debe configurarse para cada host en el clúster que se está utilizando. Se utiliza para especificar los directorios que se utilizarán como NameNode y DataNode en ese host.
+
+Antes de editar este archivo, necesitamos crear dos directorios que contendrán el nodo de nombre y el nodo de datos para esta instalación de Hadoop. Esto se puede hacer usando los siguientes comandos:
+
+```shell
+sudo mkdir -p /usr/local/hadoop_store/hdfs/namenode
+sudo mkdir -p /usr/local/hadoop_store/hdfs/datanode
+sudo chown -R hduser:hadoop /usr/local/hadoop_store
+```
+
+Abrir el archivo hdfs-site.xml con el siguiente comando:
+
+```shell
+sudo nano /usr/local/hadoop/etc/hadoop/hdfs-site.xml
+```
+
+Se deben realizar las siguientes configuraciones como se muestra:
+
+```shell
+<configuration>
+    <property>
+        <name>dfs.replication</name>
+        <value>2</value>
+    </property>
+    <property>
+        <name>dfs.namenode.name.dir</name>
+        <value>file:/usr/local/hadoop_store/hdfs/namenode</value>
+    </property>
+    <property>
+        <name>dfs.datanode.data.dir</name>
+        <value>file:/usr/local/hadoop_store/hdfs/datanode</value>
+    </property>
+</configuration>
+```
+
+De forma predeterminada, la carpeta /usr/local/hadoop/etc/hadoop/ contiene /usr/local/hadoop/etc/hadoop/mapred-site.xml.template; archivo que debe cambiarse de nombre o copiarse con el nombre mapred-site.xml:
+
+```shell
+cp $HADOOP_HOME/etc/hadoop/mapred-site.xml.template $HADOOP_HOME/etc/hadoop/mapred-site.xml
+```
+
+El archivo mapred-site.xml se utiliza para especificar qué marco se utiliza para MapReduce. Necesitamos ingresar el siguiente contenido entre la etiqueta <configuration></configuration>:
+
+```shell
+<configuration>
+ <property>
+  <name>mapred.job.tracker</name>
+  <value>master:54311</value>
+  <description>Host y puerto en el que se ejecuta el Job Tracker de MapReduce. Si es "local", los trabajos se ejecutan en proceso como una única tarea de map y reduce.
+  </description>
+ </property>
+</configuration>
+```
+
+Es posible, para evitar configurar cada archivo en los nodos esclavo, utilizar el siguiente comando en cada nodo para copiar los archivos:
+
+```shell
+scp -r /usr/local/hadoop/* slave1:/usr/local/hadoop
+```
+```shell
+scp -r /usr/local/hadoop/* slave2:/usr/local/hadoop
+```
+
+En el nodo master, abrir el archivo workers:
+
+```shell
+sudo nano $HADOOP_HOME/etc/hadoop/workers
+```
+
+Agregar las siguientes líneas como se muestra:
+
+```shell
+slave1
+slave2
+# localhost
+```
+
+También en el nodo master, abrir el archivo slaves:
+
+```shell
+sudo nano $HADOOP_HOME/etc/hadoop/slaves
+```
+
+Agregar las siguientes líneas:
+
+```shell
+slave1
+slave2
+```
+
+En cada esclavo, abrir el archivo Yarn-site.xml usando el siguiente comando:
+
+```shell
+sudo nano /usr/local/hadoop/etc/hadoop/yarn-site.xml
+```
+
+Agregar las siguientes configuraciones:
+
+```shell
+<configuration>
+ <property>
+  <name>yarn.resourcemanager.hostname</name>
+  <value>master</value>
+ </property>
+</configuration>
+```
+
+### Formatear el nuevo sistema de archivos Hadoop
+
+Es necesario formatear el sistema de archivos Hadoop para que podamos empezar a utilizarlo. El comando de formato debe emitirse con permiso de escritura ya que crea el directorio actual en la carpeta /usr/local/hadoop_store/hdfs/namenode:
+
+```shell
+hdfs namenode -format
+```
+
+El comando hdfs namenode -format debe ejecutarse una vez antes de comenzar a usar Hadoop. Si este comando se ejecuta nuevamente después de haber utilizado Hadoop, destruirá todos los datos en el sistema de archivos de Hadoop.
+
+### Iniciando Hadoop
+
+Para iniciar el nodo maestro se puede usar:
+
+```shell
+sudo su hduser
+start-dfs.sh && start-yarn.sh
+```
+
+O también este comando que ya está en desuso (deprecated):
+
+```shell
+start-all.sh
+```
+
+Para comprobar si realmente está funcionando:
+
+```shell
+jps
+  9026 NodeManager
+  7348 NameNode
+  9766 Jps
+```
+
+El resultado significa que ahora tenemos una instancia funcional de Hadoop ejecutándose en el maestro.
+
+Otra forma de comprobarlo es usando netstat:
+
+```shell
+netstat -plten | grep java
+  (Not all processes could be identified, non-owned process info
+   will not be shown, you would have to be root to see it all.)
+  tcp      0      0 0.0.0.0:50020           0.0.0.0:*           LISTEN      1001      1843372     10605/java      
+  tcp      0      0 127.0.0.1:54310         0.0.0.0:*           LISTEN      1001      1841277     10447/java      
+  tcp      0      0 0.0.0.0:50090           0.0.0.0:*           LISTEN      1001      1841130     10895/java      
+  tcp      0      0 0.0.0.0:50070           0.0.0.0:*           LISTEN      1001      1840196     10447/java      
+  tcp      0      0 0.0.0.0:50010           0.0.0.0:*           LISTEN      1001      1841320     10605/java      
+  tcp      0      0 0.0.0.0:50075           0.0.0.0:*           LISTEN      1001      1841646     10605/java      
+  ...
+```
+
+Si la configuración se realizó correctamente, en los nodos esclavos se podrá observar que también se están ejecutando procesos de hadoop:
+
+```shell
+jps
+  5840 DataNode
+  5723 Jps
+  6207 NodeManager
 ```
 
 
 
 
+
+
+
 //=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=
 //=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=
+
+
 Then try the following command:
  ```shell
 $ bin/hadoop
