@@ -280,7 +280,7 @@ Abrir el archivo de nombre de host (hostname) en todos los nodos. Cambiar el nom
 
 ```shell
 sudo nano /etc/hostname
-```shell
+```
 
 ```shell
 	master
