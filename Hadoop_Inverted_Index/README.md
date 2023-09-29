@@ -311,7 +311,7 @@ Abrir el archivo core-site.xml con el siguiente comando:
 sudo nano $HADOOP_HOME/etc/hadoop/core-site.xml
 ```
 
-Agregue las siguientes configuraciones entre la etiqueta <configuration></configuration>:
+Agregue las siguientes configuraciones entre las etiquetas de configuración:
 
 ```shell
 <configuration>
@@ -370,7 +370,7 @@ De forma predeterminada, la carpeta /usr/local/hadoop/etc/hadoop/ contiene /usr/
 cp $HADOOP_HOME/etc/hadoop/mapred-site.xml.template $HADOOP_HOME/etc/hadoop/mapred-site.xml
 ```
 
-El archivo mapred-site.xml se utiliza para especificar qué marco se utiliza para MapReduce. Necesitamos ingresar el siguiente contenido entre la etiqueta <configuration></configuration>:
+El archivo mapred-site.xml se utiliza para especificar qué marco se utiliza para MapReduce. Necesitamos ingresar el siguiente contenido.
 
 ```shell
 <configuration>
