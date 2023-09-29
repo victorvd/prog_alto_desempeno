@@ -217,12 +217,40 @@ Será necesario modificar los siguientes archivos para completar la configuraci�
 4. /usr/local/hadoop/etc/hadoop/mapred-site.xml.template
 5. /usr/local/hadoop/etc/hadoop/hdfs-site.xml
 
+Se debe cambiar a usuario hduser.
+
+```shell
+JAVA_HOME=”/usr/lib/jvm/java-7-openjdk-i386/jre”
+```
+Para editar el archivo .bashrc del directorio de inicio, se requiere la ruta donde se instaló Java para configurar la variable de entorno JAVA_HOME usando el siguiente comando:
+
+```shell
+update-alternatives --config java
+```
+
+Ahora podemos agregar lo siguiente al final de ~/.bashrc:
+
+```shell
+sudo nano ~/.bashrc
+```
+```shell
+#Hadoop Related Options
+export HADOOP_HOME="/usr/local/hadoop"
+export HADOOP_INSTALL=$HADOOP_HOME
+export HADOOP_MAPRED_HOME=$HADOOP_HOME
+export HADOOP_COMMON_HOME=$HADOOP_HOME
+export HADOOP_HDFS_HOME=$HADOOP_HOME
+export YARN_HOME=$HADOOP_HOME
+export HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_HOME/lib/native
+export PATH=$PATH:$HADOOP_HOME/sbin:$HADOOP_HOME/bin
+export HADOOP_OPTS="-Djava.library.path=$HADOOP_HOME/lib/native"
+```
 
 
 
 
-
-
+//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=
+//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=//=
 Then try the following command:
  ```shell
 $ bin/hadoop
