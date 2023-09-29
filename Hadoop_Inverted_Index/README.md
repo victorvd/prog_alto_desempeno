@@ -144,7 +144,7 @@ Abrir el archivo hadoop-env.sh en el editor nano.
 nano hadoop/etc/hadoop/hadoop-env.sh
 ```
 
-Se debe buscar las siguientes líneas, comentar y agregar la siguiente línea
+Se debe buscar las siguientes líneas, comentar y agregar la siguiente línea:
 
 ```shell
 # The java implementation to use.
