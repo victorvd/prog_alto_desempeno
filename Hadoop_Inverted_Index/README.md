@@ -220,7 +220,7 @@ Será necesario modificar los siguientes archivos para completar la configuraci�
 Se debe cambiar a usuario hduser.
 
 ```shell
-JAVA_HOME=”/usr/lib/jvm/java-7-openjdk-i386/jre”
+sudo su hduser
 ```
 Para editar el archivo .bashrc del directorio de inicio, se requiere la ruta donde se instaló Java para configurar la variable de entorno JAVA_HOME usando el siguiente comando:
 
@@ -465,9 +465,10 @@ Para comprobar si realmente está funcionando:
 
 ```shell
 jps
-  9026 NodeManager
-  7348 NameNode
-  9766 Jps
+  3439 NameNode
+  3866 ResourceManager
+  3661 SecondaryNameNode
+  3938 Jps
 ```
 
 El resultado significa que ahora tenemos una instancia funcional de Hadoop ejecutándose en el maestro.
@@ -479,7 +480,7 @@ netstat -plten | grep java
   (Not all processes could be identified, non-owned process info
    will not be shown, you would have to be root to see it all.)
   tcp      0      0 0.0.0.0:50020           0.0.0.0:*           LISTEN      1001      1843372     10605/java      
-  tcp      0      0 127.0.0.1:54310         0.0.0.0:*           LISTEN      1001      1841277     10447/java      
+  tcp      0      0 10.0.2.3:54310         0.0.0.0:*           LISTEN      1001      1841277     10447/java      
   tcp      0      0 0.0.0.0:50090           0.0.0.0:*           LISTEN      1001      1841130     10895/java      
   tcp      0      0 0.0.0.0:50070           0.0.0.0:*           LISTEN      1001      1840196     10447/java      
   tcp      0      0 0.0.0.0:50010           0.0.0.0:*           LISTEN      1001      1841320     10605/java      
@@ -495,6 +496,41 @@ jps
   5723 Jps
   6207 NodeManager
 ```
+
+Se puede verificar si todo funciona correctamente yendo a la dirección 10.0.2.4:50070 desde cualquier nodo, o localhost:50070 desde el maestro. Debe mostrarse 1 nodo activo en el resumen (summary).
+
+
+```shell
+http://10.0.2.4:50070
+```
+
+También es posible hacer esta verificación en la dirección 10.0.2.4:8088 (o localhost:8088 en el maestro). Se mostrarán detalles de la red. Debe haber 1 nodo activo.
+
+```shell
+http://10.0.2.4:8088
+```
+
+Ejecutamos el siguiente comando para detener todos los daemon que se ejecutan en el nodo:
+
+```shell
+stop-dfs.sh && stop-yarn.sh
+```
+
+O este otro comando que ya está en desuso:
+
+```shell
+stop-all.sh
+```
+
+Cuando se quiera volver a iniciar esta red, simplemente actualice las direcciones IP en el archivo /etc/hosts (en todos los nodos).
+
+Para iniciar la red simplemente se utiliza el siguiente comando en el nodo maestro:
+
+```shell
+start-dfs.sh && start-yarn.sh
+```
+
+
 
 
 
