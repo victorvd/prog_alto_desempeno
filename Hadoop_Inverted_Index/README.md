@@ -4,7 +4,7 @@ En este proyecto se creará un programa en lenguaje Java para crear un índice i
 
 El conjunto de datos contiene subconjuntos con un total de 408 archivos (etiquetas HTML) derivados del proyecto Stanford WebBase (https://ebiquity.umbc.edu/resource/ html/id/351).
 
-Primero se configurará un clúster de Hadoop en modo distribuido sobre el conjunto de datos real.
+Se configurará un clúster de Hadoop en modo distribuido sobre el conjunto de datos real. Salvo que se diga lo contrario, las configuraciones son para el maestro y los esclavos.
 
 ## Prerrequisitos
 
@@ -37,22 +37,29 @@ Adding group `hadoop' (GID 1002) ...
 Done.
 
 user@ubuntu:~$ sudo adduser --ingroup hadoop hduser
-Adding user `hduser' ...
-Adding new user `hduser' (1001) with group `hadoop' ...
-Creating home directory `/home/hduser' ...
-Copying files from `/etc/skel' ...
-Enter new UNIX password: 
-Retype new UNIX password: 
-passwd: password updated successfully
-Changing the user information for hduser
-Enter the new value, or press ENTER for the default
-	Full Name []: 
-	Room Number []: 
-	Work Phone []: 
-	Home Phone []: 
-	Other []: 
-Is the information correct? [Y/n] Y
+  Adding user `hduser' ...
+  Adding new user `hduser' (1001) with group `hadoop' ...
+  Creating home directory `/home/hduser' ...
+  Copying files from `/etc/skel' ...
+  Enter new UNIX password: 
+  Retype new UNIX password: 
+  passwd: password updated successfully
+  Changing the user information for hduser
+  Enter the new value, or press ENTER for the default
+	  Full Name []: 
+	  Room Number []: 
+	  Work Phone []: 
+	  Home Phone []: 
+	  Other []: 
+  Is the information correct? [Y/n] Y
 ```
+```shell
+sudo usermod -aG hduser
+sudo chown hduser:root -R /usr/local/hadoop/
+sudo chmod g+rwx -R /usr/local/hadoop/
+sudo adduser hduser sudo
+```
+
 En el nodo etiquetado como master (maestro) aplicamos además la siguiente configuración:
 
 ```shell
@@ -168,7 +175,7 @@ Si aparece el siguiente mensaje:
 "hduser is not in the sudoers file. This incident will be reported."
 ```
 
-Este error se puede resolver iniciando sesión como usuario root y luego agregando hduser a sudo:
+Se debe iniciar sesión como usuario root y luego agregando hduser a sudo:
 
 ```shell
 sudo adduser hduser sudo
@@ -199,6 +206,17 @@ Luego, agregar la siguiente línea al final:
 ```shell
 JAVA_HOME=”/usr/lib/jvm/java-7-openjdk-i386/jre”
 ```
+
+### Instalar archivos de configuración
+
+Será necesario modificar los siguientes archivos para completar la configuración de Hadoop:
+
+1. ~/.bashrc
+2. /usr/local/hadoop/etc/hadoop/hadoop-env.sh
+3. /usr/local/hadoop/etc/hadoop/core-site.xml
+4. /usr/local/hadoop/etc/hadoop/mapred-site.xml.template
+5. /usr/local/hadoop/etc/hadoop/hdfs-site.xml
+
 
 
 
