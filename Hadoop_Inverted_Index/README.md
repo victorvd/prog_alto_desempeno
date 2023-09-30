@@ -548,15 +548,21 @@ Copiar los archivos de entrada ([link](https://drive.google.com/uc?id=1sYSQwrPvY
 
 ```shell
 hdfs dfs -mkdir -p InvertedIndex/input
-hdfs dfs -put /home/hduser/Downloads/DATA/devdatat/5722* InvertedIndex/input
+hdfs dfs -put /home/hduser/Downloads/DATA/devdatat/fil* InvertedIndex/input
 ```
 
 ```shell
 hadoop jar invertedindex.jar InvertedIndex InvertedIndex/input InvertedIndex/output
 ```
 
-Y finalmente para ver el resultado, ejecute el siguiente comando:
+Y finalmente para ver el resultado, se ejecuta el siguiente comando:
 
 ```shell
-bin/hadoop dfs -cat InvertedIndex/output/part-r-00000
+hdfs dfs -cat InvertedIndex/output/part-r-00000
+```
+
+Si se quiere volver a ejecutar el programa, se debe eliminar el directorio de salida antes.
+
+```shell
+hdfs dfs -rm -r InvertedIndex/output
 ```
