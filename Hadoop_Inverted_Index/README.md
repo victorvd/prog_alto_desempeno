@@ -342,7 +342,7 @@ sudo chown -R hduser:hadoop /usr/local/hadoop_store
 Abrir el archivo hdfs-site.xml con el siguiente comando:
 
 ```shell
-sudo nano $HADOOP_HOMEetc/hadoop/hdfs-site.xml
+sudo nano $HADOOP_HOME/etc/hadoop/hdfs-site.xml
 ```
 
 Se deben realizar las siguientes configuraciones como se muestra:
@@ -422,7 +422,7 @@ slave2
 En cada esclavo, abrir el archivo Yarn-site.xml usando el siguiente comando:
 
 ```shell
-sudo nano $HADOOP_HOMEetc/hadoop/yarn-site.xml
+sudo nano $HADOOP_HOME/etc/hadoop/yarn-site.xml
 ```
 
 Agregar las siguientes configuraciones:
