@@ -214,7 +214,7 @@ Ser√° necesario modificar los siguientes archivos para completar la configuraci√
 1. ~/.bashrc
 2. /usr/local/hadoop/etc/hadoop/hadoop-env.sh
 3. /usr/local/hadoop/etc/hadoop/core-site.xml
-4. /usr/local/hadoop/etc/hadoop/mapred-site.xml.template
+4. /usr/local/hadoop/etc/hadoop/mapred-site.xml
 5. /usr/local/hadoop/etc/hadoop/hdfs-site.xml
 
 Se debe cambiar a usuario hduser.
@@ -342,7 +342,7 @@ sudo chown -R hduser:hadoop /usr/local/hadoop_store
 Abrir el archivo hdfs-site.xml con el siguiente comando:
 
 ```shell
-sudo nano /usr/local/hadoop/etc/hadoop/hdfs-site.xml
+sudo nano $HADOOP_HOMEetc/hadoop/hdfs-site.xml
 ```
 
 Se deben realizar las siguientes configuraciones como se muestra:
@@ -422,7 +422,7 @@ slave2
 En cada esclavo, abrir el archivo Yarn-site.xml usando el siguiente comando:
 
 ```shell
-sudo nano /usr/local/hadoop/etc/hadoop/yarn-site.xml
+sudo nano $HADOOP_HOMEetc/hadoop/yarn-site.xml
 ```
 
 Agregar las siguientes configuraciones:
