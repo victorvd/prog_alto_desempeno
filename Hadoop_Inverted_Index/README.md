@@ -2,7 +2,7 @@
 
 En este proyecto se creará un programa en lenguaje Java para crear un índice invertido (Inverted Index) de palabras que aparecen en un conjunto de documentos extraídos de páginas web. Para ello se usará [Hadoop MapReduce](https://hadoop.apache.org/docs/r2.10.0/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html).
 
-El conjunto de datos contiene subconjuntos con un total de 408 archivos (etiquetas HTML) derivados del proyecto Stanford WebBase (https://ebiquity.umbc.edu/resource/ html/id/351).
+El conjunto de datos contiene subconjuntos con un total de 408 archivos (etiquetas HTML) derivados del proyecto Stanford WebBase (https://ebiquity.umbc.edu/resource/html/id/351).
 
 Se configurará un clúster de Hadoop en modo distribuido sobre el conjunto de datos real. Salvo que se diga lo contrario, las configuraciones son para el maestro y los esclavos.
 
