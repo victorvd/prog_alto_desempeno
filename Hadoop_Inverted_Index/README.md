@@ -2,7 +2,7 @@
 
 En este proyecto se creará un programa en lenguaje Java para crear un índice invertido (Inverted Index) de palabras que aparecen en un conjunto de documentos extraídos de páginas web. Para ello se usará [Hadoop MapReduce](https://hadoop.apache.org/docs/r2.10.0/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html).
 
-El conjunto de datos contiene subconjuntos con un total de 408 archivos (etiquetas HTML) derivados del proyecto Stanford WebBase (https://ebiquity.umbc.edu/resource/html/id/351).
+El conjunto de datos contiene subconjuntos con un total de 74 archivos (etiquetas HTML) derivados del proyecto Stanford WebBase (https://ebiquity.umbc.edu/resource/html/id/351).
 
 Se configurará un clúster de Hadoop en modo distribuido sobre el conjunto de datos real. Salvo que se diga lo contrario, las configuraciones son para el maestro y los esclavos.
 
@@ -544,7 +544,7 @@ hadoop com.sun.tools.javac.Main InvertedIndex.java
 jar cf invertedindex.jar InvertedIndex*.class
 ```
 
-Copiar los archivos de entrada para este proyecto dentro de la carpeta de entrada HDFS. Ejecutar el siguiente comando para enviar el trabajo, obtener los archivos de entrada de la carpeta de entrada, generar el índice invertido y almacenar su salida en la carpeta de salida:
+Copiar los archivos de entrada ([link](https://drive.google.com/uc?id=1sYSQwrPvYBc264OdWVntC5Ts4wu6-9nY&export=download)) para este proyecto dentro de la carpeta de entrada HDFS. Ejecutar el siguiente comando para enviar el trabajo, obtener los archivos de entrada de la carpeta de entrada, generar el índice invertido y almacenar su salida en la carpeta de salida:
 
 ```shell
 hadoop fs -cp /home/hduser/Downloads/input/ InvertedIndex
