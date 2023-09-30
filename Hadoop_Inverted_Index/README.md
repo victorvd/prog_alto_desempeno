@@ -547,8 +547,8 @@ jar cf invertedindex.jar InvertedIndex*.class
 Copiar los archivos de entrada ([link](https://drive.google.com/uc?id=1sYSQwrPvYBc264OdWVntC5Ts4wu6-9nY&export=download)) para este proyecto dentro de la carpeta de entrada HDFS. Ejecutar el siguiente comando para enviar el trabajo, obtener los archivos de entrada de la carpeta de entrada, generar el índice invertido y almacenar su salida en la carpeta de salida:
 
 ```shell
-hadoop fs -cp /home/hduser/Downloads/input/ InvertedIndex
-hdfs dfs -put /home/osboxes/Downloads/map-reduce-inverted-index-master/input/file02 InvertedIndex/input
+hdfs dfs -mkdir -p InvertedIndex/input
+hdfs dfs -put /home/hduser/Downloads/DATA/devdatat/5722* InvertedIndex/input
 ```
 
 ```shell
