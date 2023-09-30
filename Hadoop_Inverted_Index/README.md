@@ -555,6 +555,8 @@ hdfs dfs -put /home/hduser/Downloads/DATA/devdatat/5722* InvertedIndex/input
 hadoop jar invertedindex.jar InvertedIndex InvertedIndex/input InvertedIndex/output
 ```
 
+Y finalmente para ver el resultado, ejecute el siguiente comando:
 
-
-
+```shell
+bin/hadoop dfs -cat InvertedIndex/output/part-r-00000
+```
