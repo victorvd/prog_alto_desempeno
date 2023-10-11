@@ -597,7 +597,7 @@ El resultado tendrá el siguiente formado:
 	'palabra1' 5722018411
 	'palabra1' 6722018415
 	'palabra2' 6722018415
-```shell
+```
 
 ### Configurar y ejecutar trabajo (job) en Hadoop
 
