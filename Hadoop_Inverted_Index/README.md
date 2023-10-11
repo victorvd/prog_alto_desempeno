@@ -322,9 +322,14 @@ Agregue las siguientes configuraciones entre las etiquetas de configuración:
  </property>
 
  <property>
-  <name>fs.default.name</name>
+  <name>fs.defaultFS</name>
   <value>hdfs://master:54310</value>
   <description>Nombre del sistema de archivos predeterminado. Un URI cuyo esquema y autoridad determinan la implementación del sistema de archivos. El esquema URI determina la propiedad de configuración (fs.SCHEME.impl) que nombra la clase de implementación del FileSystem. La autoridad del URI se utiliza para determinar el host, puerto, etc. de un sistema de archivos.</description>
+ </property>
+
+<property>
+  <name>io.file.buffer.size</name>
+  <value>131072</value>
  </property>
 </configuration>
 ```
@@ -375,22 +380,51 @@ El archivo mapred-site.xml se utiliza para especificar qué marco se utiliza par
 ```shell
 <configuration>
  <property>
-  <name>mapred.job.tracker</name>
-  <value>master:54311</value>
-  <description>Host y puerto en el que se ejecuta el Job Tracker de MapReduce. Si es "local", los trabajos se ejecutan en proceso como una única tarea de map y reduce.
-  </description>
+  <name>mapreduce.framework.name</name>
+  <value>yarn</value>
+ </property>
+ <property>
+  <name>mapred.child.java.opts</name>
+  <value>-Djava.security.egd=file:/dev/../dev/urandom</value>
  </property>
 </configuration>
 ```
 
-Es posible, para evitar configurar cada archivo en los nodos esclavo, utilizar el siguiente comando en cada nodo para copiar los archivos, cambiando el nombre del esclavo:
+El archivo Yarn-site.xml contiene los ajustes de configuración relacionados con YARN. Contiene configuraciones para el Node Manager, Resource Manager, Containers, y Application Master. Abrir el archivo usando el siguiente comando:
 
 ```shell
-scp $HADOOP_HOME/etc/hadoop/hdfs-site.xml hduser@slave#:$HADOOP_HOME/etc/hadoop/
-scp $HADOOP_HOME/etc/hadoop/core-site.xml hduser@slave#:$HADOOP_HOME/etc/hadoop/
-scp $HADOOP_HOME/etc/hadoop/mapred-site.xml hduser@slave#:$HADOOP_HOME/etc/hadoop/
-scp $HADOOP_HOME/etc/hadoop/yarn-site.xml hduser@slave#:$HADOOP_HOME/etc/hadoop/
-scp $HADOOP_HOME/etc/hadoop/hadoop-env.sh hduser@slave#:$HADOOP_HOME/etc/hadoop/
+sudo nano $HADOOP_HOME/etc/hadoop/yarn-site.xml
+```
+
+Agregar las siguientes configuraciones:
+
+```shell
+<configuration>
+ <property>
+    <name>yarn.resourcemanager.hostname</name>
+    <value>master</value>
+ </property>
+
+  <property>
+    <name>yarn.nodemanager.aux-services</name>
+    <value>mapreduce_shuffle</value>
+  </property>
+
+  <property>
+    <name>yarn.nodemanager.aux-services.mapreduce_shuffle.class</name>
+    <value>org.apache.hadoop.mapred.ShuffleHandler</value>
+  </property>
+</configuration>
+```
+
+Es posible, para evitar configurar cada archivo en los nodos esclavo, utilizar el siguiente comando en el maestro para copiar los archivos, cambiando el nombre del esclavo según corresponda:
+
+```shell
+scp $HADOOP_HOME/etc/hadoop/hdfs-site.xml hduser@slave1:$HADOOP_HOME/etc/hadoop/
+scp $HADOOP_HOME/etc/hadoop/core-site.xml hduser@slave1:$HADOOP_HOME/etc/hadoop/
+scp $HADOOP_HOME/etc/hadoop/mapred-site.xml hduser@slave1:$HADOOP_HOME/etc/hadoop/
+scp $HADOOP_HOME/etc/hadoop/yarn-site.xml hduser@slave1:$HADOOP_HOME/etc/hadoop/
+scp $HADOOP_HOME/etc/hadoop/hadoop-env.sh hduser@slave1:$HADOOP_HOME/etc/hadoop/
 ```
 
 En el nodo master, abrir el archivo workers:
@@ -418,23 +452,6 @@ Agregar las siguientes líneas:
 ```shell
 slave1
 slave2
-```
-
-En cada esclavo, abrir el archivo Yarn-site.xml usando el siguiente comando:
-
-```shell
-sudo nano $HADOOP_HOME/etc/hadoop/yarn-site.xml
-```
-
-Agregar las siguientes configuraciones:
-
-```shell
-<configuration>
- <property>
-  <name>yarn.resourcemanager.hostname</name>
-  <value>master</value>
- </property>
-</configuration>
 ```
 
 ### Formatear el nuevo sistema de archivos Hadoop
