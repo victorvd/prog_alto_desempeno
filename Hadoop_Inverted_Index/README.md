@@ -383,13 +383,14 @@ El archivo mapred-site.xml se utiliza para especificar qué marco se utiliza par
 </configuration>
 ```
 
-Es posible, para evitar configurar cada archivo en los nodos esclavo, utilizar el siguiente comando en cada nodo para copiar los archivos:
+Es posible, para evitar configurar cada archivo en los nodos esclavo, utilizar el siguiente comando en cada nodo para copiar los archivos, cambiando el nombre del esclavo:
 
 ```shell
-scp -r /usr/local/hadoop/* slave1:/usr/local/hadoop
-```
-```shell
-scp -r /usr/local/hadoop/* slave2:/usr/local/hadoop
+scp $HADOOP_HOME/etc/hadoop/hdfs-site.xml hduser@slave#:$HADOOP_HOME/etc/hadoop/
+scp $HADOOP_HOME/etc/hadoop/core-site.xml hduser@slave#:$HADOOP_HOME/etc/hadoop/
+scp $HADOOP_HOME/etc/hadoop/mapred-site.xml hduser@slave#:$HADOOP_HOME/etc/hadoop/
+scp $HADOOP_HOME/etc/hadoop/yarn-site.xml hduser@slave#:$HADOOP_HOME/etc/hadoop/
+scp $HADOOP_HOME/etc/hadoop/hadoop-env.sh hduser@slave#:$HADOOP_HOME/etc/hadoop/
 ```
 
 En el nodo master, abrir el archivo workers:
