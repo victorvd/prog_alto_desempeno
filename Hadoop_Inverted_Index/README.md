@@ -551,6 +551,52 @@ start-dfs.sh && start-yarn.sh
 
 ## Programa Inverted Index
 
+
+### Programación en Java
+
+Principalmente, se debe implementar una clase Mapper y una clase Reduce, extendiendo las clases de hadoop. Se asigna pares clave/valor de entrada a un conjunto de pares clave/valor intermedios (de salida). La clave de entrada es un Objeto y el valor de entrada es un Texto. La clave de salida y valor son Texto.
+
+Se debe considerar que existen tipos de datos específico de Hadoop que se utiliza para manejar números y cadenas en un entorno hadoop. Se utilizan IntWritable y Text en lugar de los tipos de datos Java Integer y String. Se define 'one' como el número de apariciones de 'word' y se establece en el valor 1 durante el proceso de map. Entre algunas de las funciones que se deben definir, se encuentran:
+
+ - Dividir DocID y el texto real.
+ - Leer la entrada una línea a la vez y tokenizar ("'" y "-" como tokenizadores).
+ - Iterar por todas las palabras disponibles por línea para formar el par clave/valor.
+ - Eliminar caracteres especiales.
+ - Envíar al recopilador de salida y la su vez pasar la salida a Reducer.
+
+El resultado tendrá el siguiente formado:
+	'palabra1' 5722018411
+	'palabra1' 6722018415
+	'palabra2' 6722018415
+ 
+```shell
+    public void map(Object key, Text value, Context context
+                    ) throws IOException, InterruptedException {
+      String[] line = value.toString().split("\t");
+      document.set(line[0]);
+      StringTokenizer itr = new StringTokenizer(line[1]);
+      while (itr.hasMoreTokens()) {
+        word.set(itr.nextToken());
+        context.write(word, document);
+      }
+    }
+```
+
+El método Reduce recopila el resultado del cálculo del Mapper y agrega el recuento de palabras. Se debe Iterar a través de todos los valores disponibles con una [word] clave, sumarlos y dar el resultado final como la clave y la suma de sus valores junto con el DocID.
+
+```shell
+    public void reduce(Text key, Iterable<Text> values,
+                       Context context
+                       ) throws IOException, InterruptedException {
+      String documents = "";
+      for (Text val : values) {
+        documents += val.toString() + ",";
+      }
+      result.set(documents);
+      context.write(key, result);
+    }
+```
+
 ### Configurar y ejecutar trabajo (job) en Hadoop
 
 Este trabajo obtiene archivos de texto de la carpeta "input" como argumentos del Mapper. Al enviar un trabajo de Hadoop y aplicar el paso Reduce, genera un índice invertido.
