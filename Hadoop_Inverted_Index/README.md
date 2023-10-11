@@ -554,9 +554,7 @@ start-dfs.sh && start-yarn.sh
 
 ### Programación en Java
 
-Principalmente, se debe implementar una clase Mapper y una clase Reduce, extendiendo las clases de Hadoop. Se asigna pares clave/valor de entrada a un conjunto de pares clave/valor intermedios (de salida). La clave de entrada es un Objeto y el valor de entrada es un Texto. La clave de salida y valor son Texto.
-
-Se debe considerar que existen tipos de datos específicos de Hadoop, que se utilizan para manejar números y cadenas en un entorno Hadoop. Se utilizan IntWritable y Text en lugar de los tipos de datos Java Integer y String. Se define 'one' como el número de apariciones de 'word' y se establece en el valor 1 durante el proceso de Map. Además, entre algunas de las funciones que se deben definir, se encuentran:
+Principalmente, se debe implementar una clase Mapper y una clase Reduce, extendiendo las clases de Hadoop. Se asigna pares clave/valor de entrada a un conjunto de pares clave/valor intermedios (de salida). La clave de entrada es un Objeto y el valor de entrada es un Texto. Las claves de salida y valor son Texto. Se debe considerar que existen tipos de datos específicos de Hadoop, que se utilizan para manejar números y cadenas en un entorno Hadoop. Se utilizan IntWritable y Text en lugar de los tipos de datos Java Integer y String. Se define 'one' como el número de apariciones de 'word' y se establece en el valor 1 durante el proceso de Map. Además, entre algunas de las funciones que se deben definir, se encuentran:
 
  - Dividir DocID y el texto real.
  - Leer la entrada una línea a la vez y tokenizar ("'" y "-" como tokenizadores).
