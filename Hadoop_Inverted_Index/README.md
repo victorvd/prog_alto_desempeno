@@ -417,7 +417,7 @@ Agregar las siguientes configuraciones:
 </configuration>
 ```
 
-Es posible, para evitar configurar cada archivo en los nodos esclavo, utilizar el siguiente comando en el maestro para copiar los archivos, cambiando el nombre del esclavo según corresponda:
+Es posible, para evitar configurar cada archivo en los nodos esclavo, utilizar los siguientes comandos en el maestro para copiar los archivos, cambiando el nombre del esclavo según corresponda:
 
 ```shell
 scp $HADOOP_HOME/etc/hadoop/hdfs-site.xml hduser@slave1:$HADOOP_HOME/etc/hadoop/
@@ -606,6 +606,13 @@ Para enviar un trabajo de Hadoop, la implementación de MadReduce debe empaqueta
 ```shell
 hadoop com.sun.tools.javac.Main InvertedIndex.java
 jar cf invertedindex.jar InvertedIndex*.class
+```
+
+Es necesario contar con el programa en cada uno de los nodos (maestro y esclavos). Para ello se puede utilizar los siguientes comandos en el maestro, cambiando el nombre del esclavo según corresponda:
+
+```shell
+scp /home/hduser/invert* hduser@slave1:/home/hduser/
+scp /home/hduser/Invert* hduser@slave1:/home/hduser/
 ```
 
 Copiar los archivos de entrada ([link](https://drive.google.com/uc?id=1sYSQwrPvYBc264OdWVntC5Ts4wu6-9nY&export=download)) para este proyecto dentro de la carpeta de entrada HDFS. Ejecutar el siguiente comando para enviar el trabajo, obtener los archivos de entrada de la carpeta de entrada, generar el índice invertido y almacenar su salida en la carpeta de salida:
