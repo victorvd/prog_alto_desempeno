@@ -566,7 +566,7 @@ Copiar los archivos de entrada ([link](https://drive.google.com/uc?id=1sYSQwrPvY
 
 ```shell
 hdfs dfs -mkdir -p InvertedIndex/input
-hdfs dfs -put /home/hduser/Downloads/DATA/devdatat/fil* InvertedIndex/input
+hdfs dfs -put /home/hduser/Downloads/DATA/fulldata/5722* InvertedIndex/input
 ```
 
 ```shell
@@ -579,7 +579,7 @@ Y finalmente para ver el resultado, se ejecuta el siguiente comando:
 hdfs dfs -cat InvertedIndex/output/part-r-00000
 ```
 
-Si se quiere volver a ejecutar el programa, se debe eliminar el directorio de salida antes.
+Si se quiere volver a ejecutar el programa, antes se debe eliminar el directorio de salida (output).
 
 ```shell
 hdfs dfs -rm -r InvertedIndex/output
