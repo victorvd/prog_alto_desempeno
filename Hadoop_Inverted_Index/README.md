@@ -327,7 +327,7 @@ Agregue las siguientes configuraciones entre las etiquetas de configuración:
   <description>Nombre del sistema de archivos predeterminado. Un URI cuyo esquema y autoridad determinan la implementación del sistema de archivos. El esquema URI determina la propiedad de configuración (fs.SCHEME.impl) que nombra la clase de implementación del FileSystem. La autoridad del URI se utiliza para determinar el host, puerto, etc. de un sistema de archivos.</description>
  </property>
 
-<property>
+ <property>
   <name>io.file.buffer.size</name>
   <value>131072</value>
  </property>
