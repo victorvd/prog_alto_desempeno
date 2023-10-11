@@ -564,11 +564,6 @@ Se debe considerar que existen tipos de datos específico de Hadoop que se utili
  - Eliminar caracteres especiales.
  - Envíar al recopilador de salida y la su vez pasar la salida a Reducer.
 
-El resultado tendrá el siguiente formado:
-	'palabra1' 5722018411
-	'palabra1' 6722018415
-	'palabra2' 6722018415
- 
 ```shell
     public void map(Object key, Text value, Context context
                     ) throws IOException, InterruptedException {
@@ -596,6 +591,13 @@ El método Reduce recopila el resultado del cálculo del Mapper y agrega el recu
       context.write(key, result);
     }
 ```
+El resultado tendrá el siguiente formado:
+
+```shell
+	'palabra1' 5722018411
+	'palabra1' 6722018415
+	'palabra2' 6722018415
+```shell
 
 ### Configurar y ejecutar trabajo (job) en Hadoop
 
