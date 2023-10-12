@@ -8,7 +8,7 @@ Se configurará un clúster de Hadoop en modo distribuido sobre el conjunto de d
 
 ## Prerrequisitos
 
-En este parte, instalaremos un clúster Hadoop de un tres nodos respaldado por el sistema de archivos distribuido Hadoop (HDFS) en Ubuntu.
+En este parte, instalaremos un clúster Hadoop de tres nodos respaldado por el sistema de archivos distribuido Hadoop (HDFS) en Ubuntu.
 
 ### Instalación de Java
 
@@ -261,7 +261,7 @@ Se puede ejecutar el siguiente comando para obtener la dirección IP de la máqu
 ```shell
 ip a
 ```
-Para agregar las direcciones IP abrimos el archivos de hosts:
+Para agregar las direcciones IP abrimos el archivo de hosts:
 
 ```shell
 sudo nano /etc/hosts
